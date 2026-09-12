@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Recommendations - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"
+            defer></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .selected-book {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .selected-book h2 {
+            margin-top: 0;
+        }
+
+        .meta {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .book-card h3 {
+            margin-top: 0;
+        }
+
+        .similarity {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--surface-2);
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 9px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .favorite {
+            background: var(--gold);
+            color: #111;
+        }
+
+        .empty {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .back {
+            margin-top: 30px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="topbar">
+
+        <div>
+            <h1>🤖 AI Book Recommendations</h1>
+
+            <p class="meta">
+                Recommendations generated using NLP-based
+                TF-IDF text similarity.
+            </p>
+        </div>
+
+        <button id="themeToggle"
+                class="theme-toggle">
+            🌙 Dark
+        </button>
+
+    </div>
+
+
+    <!-- SELECTED BOOK -->
+
+    <div class="selected-book">
+
+        <h2>
+            📖 {{ selected_book.title }}
+        </h2>
+
+        <div class="meta">
+
+            <strong>Author:</strong>
+            {{ selected_book.author }}
+
+            <br>
+
+            <strong>Genre:</strong>
+            {{ selected_book.genre }}
+
+            <br>
+
+            <strong>Rating:</strong>
+            ⭐ {{ selected_book.rating }}
+
+            <br>
+
+            <strong>Publication Year:</strong>
+            📅 {{ selected_book.year }}
+
+        </div>
+
+    </div>
+
+
+    <!-- RECOMMENDATIONS -->
+
+    <h2>✨ Recommended Books</h2>
+
+    {% if recommendations %}
+
+    <div class="recommendation-grid">
+
+        {% for book in recommendations %}
+
+        <div class="book-card">
+
+            <h3>
+                {{ book.title }}
+            </h3>
+
+            <div class="meta">
+
+                <strong>Author:</strong>
+                {{ book.author }}
+
+                <br>
+
+                <strong>Genre:</strong>
+                {{ book.genre }}
+
+                <br>
+
+                <strong>Rating:</strong>
+                ⭐ {{ book.rating }}
+
+                <br>
+
+                <strong>Publication Year:</strong>
+                📅 {{ book.year }}
+
+            </div>
+
+
+            <div class="similarity">
+
+                Similarity:
+                {{ book.similarity }}%
+
+            </div>
+
+
+            <div class="actions">
+
+                <a class="btn"
+                   href="{{ url_for('book_details',
+                                    book_id=book.book_id) }}">
+                    📖 Details
+                </a>
+
+
+                <a class="btn"
+                   href="{{ url_for('recommend',
+                                    book_id=book.book_id) }}">
+                    🤖 Recommend
+                </a>
+
+
+                <a class="btn favorite"
+                   href="{{ url_for('add_favorite',
+                                    book_id=book.book_id) }}">
+                    ❤️ Favorite
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+
+        <h3>No recommendations found.</h3>
+
+        <p class="meta">
+            Try selecting another book.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="back">
+
+        <a class="btn"
+           href="{{ url_for('search') }}">
+            ← Back to Search
+        </a>
+
+        <a class="btn"
+           href="{{ url_for('dashboard') }}">
+            🏠 Dashboard
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

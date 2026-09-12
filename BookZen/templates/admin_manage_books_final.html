@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Books - BookZen</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1020;
+    color: #ffffff;
+}
+
+.header {
+    background: #151b35;
+    padding: 22px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30395f;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #f5c76b;
+}
+
+.back {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 1px solid #59658f;
+    border-radius: 8px;
+}
+
+.container {
+    width: 95%;
+    margin: 30px auto;
+}
+
+h1 {
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #151b35;
+    border: 1px solid #30395f;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+label {
+    font-size: 14px;
+    color: #c8cde0;
+}
+
+input, textarea {
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px;
+    border-radius: 7px;
+    border: 1px solid #3d4770;
+    background: #0d1328;
+    color: white;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+button {
+    background: #f5c76b;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancel {
+    margin-left: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #30395f;
+    text-align: left;
+}
+
+th {
+    background: #1c2445;
+    color: #f5c76b;
+}
+
+td {
+    color: #e4e7f2;
+}
+
+.action {
+    padding: 7px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+.edit {
+    background: #374785;
+    color: white;
+}
+
+.delete {
+    background: #8e3b46;
+    color: white;
+}
+
+.badge {
+    display: inline-block;
+    padding: 7px 12px;
+    background: #252e55;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+@media(max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="logo">📚 BookZen Admin</div>
+
+    <a class="back"
+       href="{{ url_for('admin_dashboard') }}">
+       ← Dashboard
+    </a>
+
+</div>
+
+<div class="container">
+
+<h1>📚 Manage Books</h1>
+
+<div class="badge">
+    Total Books: {{ books|length }}
+</div>
+
+<!-- =====================================================
+     ADD / EDIT FORM
+     ===================================================== -->
+
+<div class="card">
+
+{% if edit_book %}
+
+<h2>✏️ Edit Book</h2>
+
+<form method="POST"
+      action="{{ url_for('admin_manage_books_final') }}">
+
+<input type="hidden"
+       name="action"
+       value="edit">
+
+<input type="hidden"
+       name="book_id"
+       value="{{ edit_book[pk] }}">
+
+{% else %}
+
+<h2>➕ Add New Book</h2>
+
+<form method="POST"
+      action="{{ url_for('admin_manage_books_final') }}">
+
+<input type="hidden"
+       name="action"
+       value="add">
+
+{% endif %}
+
+<div class="form-grid">
+
+{% for field in [
+    "title",
+    "author",
+    "genre",
+    "description",
+    "rating",
+    "year",
+    "pages",
+    "language",
+    "popularity_score",
+    "keywords"
+] %}
+
+{% if field in columns %}
+
+<div class="{% if field == 'description' %}full{% endif %}">
+
+<label>
+{{ field.replace("_", " ").title() }}
+</label>
+
+{% if field == "description" %}
+
+<textarea name="{{ field }}">{{ edit_book[field] if edit_book else "" }}</textarea>
+
+{% else %}
+
+<input
+    type="text"
+    name="{{ field }}"
+    value="{{ edit_book[field] if edit_book else "" }}"
+>
+
+{% endif %}
+
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<button type="submit">
+
+{% if edit_book %}
+Update Book
+{% else %}
+Add Book
+{% endif %}
+
+</button>
+
+{% if edit_book %}
+
+<a class="cancel"
+   href="{{ url_for('admin_manage_books_final') }}">
+   Cancel
+</a>
+
+{% endif %}
+
+</form>
+
+</div>
+
+
+<!-- =====================================================
+     BOOK LIST
+     ===================================================== -->
+
+<div class="card">
+
+<h2>📖 All Books</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+{% for column in columns %}
+
+<th>{{ column.replace("_", " ").title() }}</th>
+
+{% endfor %}
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for book in books %}
+
+<tr>
+
+{% for column in columns %}
+
+<td>
+
+{% if column == "description" %}
+
+{{ book[column][:80] }}{% if book[column]|length > 80 %}...{% endif %}
+
+{% else %}
+
+{{ book[column] }}
+
+{% endif %}
+
+</td>
+
+{% endfor %}
+
+<td>
+
+<a class="action edit"
+   href="{{ url_for('admin_manage_books_final', edit=book[pk]) }}">
+   Edit
+</a>
+
+<a class="action delete"
+   href="{{ url_for('admin_manage_books_final', delete=book[pk]) }}"
+   onclick="return confirm('Are you sure you want to delete this book?');">
+   Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

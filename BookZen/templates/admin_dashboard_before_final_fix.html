@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | BookZen</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #080b18;
+
+    color: white;
+}
+
+
+.navbar {
+
+    padding: 20px 6%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom:
+        1px solid #272c46;
+}
+
+
+.logo {
+
+    font-size: 27px;
+
+    font-weight: 800;
+}
+
+
+.logout {
+
+    text-decoration: none;
+
+    color: white;
+
+    background: #7c3aed;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+}
+
+
+.container {
+
+    padding: 45px 6%;
+}
+
+
+h1 {
+
+    font-size: 35px;
+
+    margin-bottom: 8px;
+}
+
+
+.welcome {
+
+    color: #aaa;
+
+    margin-bottom: 35px;
+}
+
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(210px, 1fr)
+        );
+
+    gap: 20px;
+}
+
+
+.card {
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background: #141930;
+
+    border:
+        1px solid #292f4c;
+}
+
+
+.label {
+
+    color: #aaa;
+
+    font-size: 15px;
+}
+
+
+.number {
+
+    font-size: 36px;
+
+    font-weight: 800;
+
+    margin-top: 12px;
+}
+
+
+.actions {
+
+    margin-top: 35px;
+
+    display: flex;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.action {
+
+    text-decoration: none;
+
+    color: white;
+
+    background: #6d4aff;
+
+    padding: 14px 22px;
+
+    border-radius: 12px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        📚 BookZen Admin
+    </div>
+
+    <a
+        href="{{ url_for('admin_logout') }}"
+        class="logout"
+    >
+        Logout
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <h1>
+        Admin Dashboard
+    </h1>
+
+    <div class="welcome">
+        Welcome, {{ admin_name }} 👋
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="label">
+                Total Books
+            </div>
+
+            <div class="number">
+                {{ total_books }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="label">
+                Total Genres
+            </div>
+
+            <div class="number">
+                {{ total_genres }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="label">
+                Average Rating
+            </div>
+
+            <div class="number">
+                {{ average_rating }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <a
+            href="{{ url_for('admin_books') }}"
+            class="action"
+        >
+            📚 Manage Books
+        </a>
+
+
+        <a
+            href="{{ url_for('admin_books_add_compat') }}"
+            class="action"
+        >
+            ➕ Add Book
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

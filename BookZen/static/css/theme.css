@@ -1,0 +1,73 @@
+:root {
+    --bg: #0b1020;
+    --surface: #141c34;
+    --surface-2: #11182d;
+    --border: #273252;
+    --text: #ffffff;
+    --muted: #9da6c3;
+    --primary: #6657d9;
+    --primary-hover: #7667e8;
+    --gold: #f4c95d;
+    --danger: #8b2d45;
+}
+
+[data-theme="light"] {
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --surface-2: #eef1f7;
+    --border: #d9deea;
+    --text: #182033;
+    --muted: #667085;
+    --primary: #6657d9;
+    --primary-hover: #5547c7;
+    --gold: #b77900;
+    --danger: #b4234d;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.navbar,
+.book-card,
+.selected-book,
+.empty,
+.card,
+.stat-card {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+input,
+textarea,
+select {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.muted,
+.subtitle,
+.author {
+    color: var(--muted);
+}
+
+.theme-toggle {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 9px 13px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary);
+}

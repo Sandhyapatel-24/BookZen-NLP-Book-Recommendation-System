@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{{ action }} Book - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+        }
+
+        h1 {
+            color: var(--gold);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border-radius: 9px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text);
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back {
+            margin-left: 10px;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        @media(max-width:700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>
+            {{ "➕" if action == "Add" else "✏️" }}
+            {{ action }} Book
+        </h1>
+
+
+        <form method="POST">
+
+            <div class="grid">
+
+
+                <div>
+
+                    <label>Book Title</label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ book.title if book else '' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Author</label>
+
+                    <input
+                        type="text"
+                        name="author"
+                        value="{{ book.author if book else '' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Genre</label>
+
+                    <input
+                        type="text"
+                        name="genre"
+                        value="{{ book.genre if book else '' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Rating</label>
+
+                    <input
+                        type="number"
+                        name="rating"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value="{{ book.rating if book else '4.0' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Publication Year</label>
+
+                    <input
+                        type="number"
+                        name="year"
+                        value="{{ book.year if book else '2025' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Pages</label>
+
+                    <input
+                        type="number"
+                        name="pages"
+                        value="{{ book.pages if book else '300' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Language</label>
+
+                    <input
+                        type="text"
+                        name="language"
+                        value="{{ book.language if book else 'English' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Popularity Score</label>
+
+                    <input
+                        type="number"
+                        name="popularity_score"
+                        step="0.1"
+                        value="{{ book.popularity_score if book else '50' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="full">
+
+                    <label>Description</label>
+
+                    <textarea
+                        name="description"
+                        required
+                    >{{ book.description if book else '' }}</textarea>
+
+                </div>
+
+
+                <div class="full">
+
+                    <label>Keywords</label>
+
+                    <input
+                        type="text"
+                        name="keywords"
+                        value="{{ book.keywords if book else '' }}"
+                        placeholder="mystery, detective, clues"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button type="submit">
+
+                💾 {{ action }} Book
+
+            </button>
+
+
+            <a
+                class="back"
+                href="{{ url_for('admin_books') }}">
+
+                ← Back to Books
+
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <script src="{{ url_for(
+        'static',
+        filename='js/theme.js'
+    ) }}"></script>
+
+</body>
+
+</html>

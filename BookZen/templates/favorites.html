@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Favorites - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            color: var(--gold);
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .theme-toggle {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 9px 13px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .container {
+            width: 88%;
+            max-width: 1200px;
+            margin: 45px auto;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .book-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            transition: 0.25s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .heart {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .book-card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .genre {
+            display: inline-block;
+            background: rgba(102, 87, 217, 0.15);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .remove-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: var(--danger);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .remove-btn:hover {
+            opacity: 0.9;
+        }
+
+        .empty {
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: 18px;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: var(--muted);
+            margin-bottom: 25px;
+        }
+
+        .dashboard-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .heading h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/dashboard" class="logo">
+            📚 BookZen
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/search">
+                Search
+            </a>
+
+            <a href="/favorites">
+                ❤️ Favorites
+            </a>
+
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                type="button"
+            >
+                🌙 Dark
+            </button>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <div class="heading">
+
+            <h1>
+                ❤️ My Favorites
+            </h1>
+
+            <p>
+                Your personally saved books in BookZen.
+            </p>
+
+        </div>
+
+
+        {% if books %}
+
+        <div class="books-grid">
+
+            {% for book in books %}
+
+            <div class="book-card">
+
+                <div class="heart">
+                    ❤️
+                </div>
+
+                <h2>
+                    {{ book.title }}
+                </h2>
+
+                <div class="author">
+                    By {{ book.author }}
+                </div>
+
+                <div class="genre">
+                    {{ book.genre }}
+                </div>
+
+                <div class="rating">
+                    ⭐ {{ book.rating }}
+                </div>
+
+                <a
+                    href="/remove_favorite/{{ book.book_id }}"
+                    class="remove-btn"
+                >
+                    Remove from Favorites
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📚
+            </div>
+
+            <h2>
+                No Favorites Yet
+            </h2>
+
+            <p>
+                Explore books and save your favorite ones here.
+            </p>
+
+            <a
+                href="/dashboard"
+                class="dashboard-btn"
+            >
+                Explore Books
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+
+</html>

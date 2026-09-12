@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BookZen - AI Book Recommendation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            color: var(--gold);
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .theme-toggle {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 9px 13px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .hero {
+            width: 88%;
+            max-width: 1200px;
+            margin: 80px auto;
+            text-align: center;
+        }
+
+        .hero-icon {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 13px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .secondary-btn {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .features {
+            width: 88%;
+            max-width: 1200px;
+            margin: 60px auto;
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            text-align: center;
+            transition: 0.25s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h2 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .hero {
+                margin-top: 55px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            📚 BookZen
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/register">
+                Register
+            </a>
+
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                type="button"
+            >
+                🌙 Dark
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <section class="hero">
+
+        <div class="hero-icon">
+            📚
+        </div>
+
+        <h1>
+            Discover Your Next
+            <span>Favorite Book</span>
+        </h1>
+
+        <p>
+            BookZen is an NLP-based book recommendation
+            and genre classification system that helps
+            readers discover books based on their interests,
+            descriptions and similarity.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="/register"
+                class="btn primary-btn"
+            >
+                🚀 Get Started
+            </a>
+
+            <a
+                href="/login"
+                class="btn secondary-btn"
+            >
+                Login
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="features">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <h2>
+                AI Recommendations
+            </h2>
+
+            <p>
+                Get personalized book recommendations
+                using NLP and text similarity.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🔍
+            </div>
+
+            <h2>
+                Smart Search
+            </h2>
+
+            <p>
+                Quickly find books from our collection
+                using an easy search interface.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ❤️
+            </div>
+
+            <h2>
+                Favorites
+            </h2>
+
+            <p>
+                Save books you love and access them
+                anytime from your favorites list.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🏷️
+            </div>
+
+            <h2>
+                Genre Classification
+            </h2>
+
+            <p>
+                Predict book genres using a trained
+                machine learning classification model.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        © 2026 BookZen — NLP-Based Book Recommendation System
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+
+</html>

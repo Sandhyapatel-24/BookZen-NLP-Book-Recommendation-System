@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Genre Prediction - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"
+            defer></script>
+
+    <style>
+        .prediction-container {
+            max-width: 850px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .prediction-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 16px;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .predict-btn {
+            margin-top: 18px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .predict-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .result-label {
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .genre-name {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: var(--text);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="prediction-container">
+
+        <div class="prediction-card">
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h1>🎭 Genre Prediction</h1>
+                    <p class="subtitle">
+                        Enter a book description and let BookZen predict its genre.
+                    </p>
+                </div>
+
+                <button id="themeToggle" class="theme-toggle">
+                    🌙 Dark
+                </button>
+            </div>
+
+            <form method="POST">
+
+                <textarea
+                    name="description"
+                    placeholder="Enter book description here..."
+                    required>{{ request.form.get('description', '') }}</textarea>
+
+                <button type="submit" class="predict-btn">
+                    🤖 Predict Genre
+                </button>
+
+            </form>
+
+            {% if prediction %}
+
+            <div class="result">
+
+                <div class="result-label">
+                    Predicted Genre
+                </div>
+
+                <div class="genre-name">
+                    {{ prediction }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"
+            defer></script>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .stat-card h3 {
+            margin-top: 0;
+            color: var(--muted);
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .section {
+            margin-top: 35px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .feature {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .feature:hover {
+            border-color: var(--primary);
+        }
+
+        .recent {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .recent-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .recent-item:last-child {
+            border-bottom: none;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .logout {
+            color: white;
+            background: var(--danger);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="header">
+
+        <div>
+
+            <h1>📚 Welcome to BookZen</h1>
+
+            <p class="muted">
+                Hello, {{ name }} 👋
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <button id="themeToggle"
+                    class="theme-toggle">
+                🌙 Dark
+            </button>
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN STATISTICS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <h3>📚 Total Books</h3>
+
+            <div class="number">
+                {{ total_books }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>🎭 Total Genres</h3>
+
+            <div class="number">
+                {{ total_genres }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>⭐ Average Rating</h3>
+
+            <div class="number">
+                {{ average_rating }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>📅 Publication Years</h3>
+
+            <div class="number">
+                {{ min_year }} - {{ max_year }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>❤️ Favorite Books</h3>
+
+            <div class="number">
+                {{ favorite_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>🤖 AI Recommendations</h3>
+
+            <div class="number">
+                {{ recommendation_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>🎭 Most Recommended Genre</h3>
+
+            <div class="number"
+                 style="font-size:22px;">
+                {{ most_recommended_genre }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI FEATURES -->
+
+    <div class="section">
+
+        <h2>🤖 AI Features</h2>
+
+        <div class="feature-grid">
+
+            <a class="feature"
+               href="{{ url_for('search') }}">
+
+                <h3>🔎 Search Books</h3>
+
+                <p class="muted">
+                    Search and filter books.
+                </p>
+
+            </a>
+
+
+            <a class="feature"
+               href="{{ url_for('predict_genre') }}">
+
+                <h3>🎭 Genre Prediction</h3>
+
+                <p class="muted">
+                    Predict a book's genre using NLP.
+                </p>
+
+            </a>
+
+
+            <a class="feature"
+               href="{{ url_for('favorites') }}">
+
+                <h3>❤️ Favorites</h3>
+
+                <p class="muted">
+                    View your favorite books.
+                </p>
+
+            </a>
+
+
+            <a class="feature"
+               href="{{ url_for('history') }}">
+
+                <h3>📜 Recommendation History</h3>
+
+                <p class="muted">
+                    View your previous AI recommendations.
+                </p>
+
+            </a>
+
+
+            <a class="feature"
+               href="{{ url_for('profile') }}">
+
+                <h3>👤 My Profile</h3>
+
+                <p class="muted">
+                    View your BookZen profile.
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT ACTIVITY -->
+
+    <div class="section">
+
+        <h2>📜 Recent Recommendation Activity</h2>
+
+        <div class="recent">
+
+            {% if recent_books %}
+
+                {% for book in recent_books %}
+
+                <div class="recent-item">
+
+                    <strong>
+                        {{ book.title }}
+                    </strong>
+
+                    <br>
+
+                    <span class="muted">
+
+                        {{ book.genre }}
+                        • ⭐ {{ book.rating }}
+
+                        {% if book.created_at %}
+                        • {{ book.created_at }}
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="muted">
+                    No recommendation activity yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

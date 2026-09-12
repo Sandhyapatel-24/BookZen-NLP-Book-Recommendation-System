@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Recommendation History - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"
+            defer></script>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .history-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .book-info h3 {
+            margin: 0 0 8px 0;
+        }
+
+        .meta {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 9px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+        }
+
+        .empty {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+        }
+
+        @media(max-width: 700px) {
+
+            .history-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>📜 Recommendation History</h1>
+
+            <p class="meta">
+                Your previous AI recommendation activity.
+            </p>
+
+        </div>
+
+
+        <button id="themeToggle"
+                class="theme-toggle">
+            🌙 Dark
+        </button>
+
+    </div>
+
+
+    {% if history %}
+
+    <div class="history-list">
+
+        {% for book in history %}
+
+        <div class="history-card">
+
+            <div class="book-info">
+
+                <h3>
+                    📖 {{ book.title }}
+                </h3>
+
+                <div class="meta">
+
+                    <strong>Author:</strong>
+                    {{ book.author }}
+
+                    <br>
+
+                    <strong>Genre:</strong>
+                    {{ book.genre }}
+
+                    <br>
+
+                    <strong>Rating:</strong>
+                    ⭐ {{ book.rating }}
+
+                    <br>
+
+                    <strong>Publication Year:</strong>
+                    📅 {{ book.year }}
+
+                    {% if book.created_at %}
+
+                    <br>
+
+                    <strong>Viewed:</strong>
+                    {{ book.created_at }}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a class="btn"
+                   href="{{ url_for('book_details',
+                                    book_id=book.book_id) }}">
+                    📖 Details
+                </a>
+
+
+                <a class="btn delete-btn"
+                   href="{{ url_for('delete_history',
+                                    history_id=book.history_id) }}"
+                   onclick="return confirm('Clear this history item?');">
+                    🗑️ Clear
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+
+        <h2>📭 No History</h2>
+
+        <p class="meta">
+            Your recommendation history is empty.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <br>
+
+    <a class="btn"
+       href="{{ url_for('dashboard') }}">
+        ← Dashboard
+    </a>
+
+
+</div>
+
+</body>
+
+</html>

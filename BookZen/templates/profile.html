@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/theme.css'
+          ) }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .navbar {
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            margin: 20px 0;
+        }
+
+        .info-box {
+            padding: 15px;
+            margin: 10px 0;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .value {
+            font-size: 17px;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .gold {
+            background: var(--gold);
+            color: #17120a;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div class="logo">
+            📚 BookZen
+        </div>
+
+        <div class="nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('favorites') }}">
+                ❤️ Favorites
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+            <button id="themeToggle"
+                    class="theme-toggle">
+                ☀️ Light
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="profile-card">
+
+            <div class="avatar">
+                👤
+            </div>
+
+            <h1>
+                My Profile
+            </h1>
+
+            <p>
+                Manage and view your BookZen account information.
+            </p>
+
+
+            <div class="info">
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Full Name
+                    </div>
+
+                    <div class="value">
+                        {{ user["name"] }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Email
+                    </div>
+
+                    <div class="value">
+                        {{ user["email"] }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Recommendation Activity
+                    </div>
+
+                    <div class="value">
+                        {{ history_count }} recommendation(s)
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a class="btn"
+                   href="{{ url_for('history') }}">
+                    📜 Recommendation History
+                </a>
+
+                <a class="btn gold"
+                   href="{{ url_for('favorites') }}">
+                    ❤️ My Favorites
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for(
+        'static',
+        filename='js/theme.js'
+    ) }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 430px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+        }
+
+        .login-card h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .register-text {
+            text-align: center;
+            color: var(--muted);
+            margin-top: 22px;
+            font-size: 14px;
+        }
+
+        .register-text a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .home-link:hover {
+            color: var(--gold);
+        }
+
+        .theme-area {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .theme-toggle {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 9px 13px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">
+
+            <a href="/">
+                📚 BookZen
+            </a>
+
+        </div>
+
+
+        <div class="login-card">
+
+            <h1>
+                Welcome Back
+            </h1>
+
+            <p class="subtitle">
+                Login to continue your reading journey.
+            </p>
+
+
+            <form
+                action="/login"
+                method="POST"
+            >
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="register-text">
+
+                Don't have an account?
+
+                <a href="/register">
+                    Create Account
+                </a>
+
+            </div>
+
+
+            <a href="/" class="home-link">
+                ← Back to Home
+            </a>
+
+        </div>
+
+
+        <div class="theme-area">
+
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                type="button"
+            >
+                🌙 Dark
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+
+</html>

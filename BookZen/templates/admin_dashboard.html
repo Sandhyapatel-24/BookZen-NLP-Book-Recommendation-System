@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - BookZen</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/theme.css'
+          ) }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .navbar {
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .stat {
+            padding: 24px;
+            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat h2 {
+            margin: 10px 0 5px;
+            color: var(--gold);
+        }
+
+        .stat p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .section {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .chart-box {
+            min-height: 350px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 13px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .metric {
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 25px;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        .metric span {
+            color: var(--muted);
+        }
+
+        .genre-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        @media (max-width: 850px) {
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">
+            📚 BookZen Admin
+        </div>
+
+        <div class="nav">
+
+            <a href="{{ url_for(
+                'admin_dashboard'
+            ) }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for(
+                'admin_books'
+            ) }}">
+                Books
+            </a>
+
+            <a href="{{ url_for(
+                'admin_logout'
+            ) }}">
+                Logout
+            </a>
+
+            <button
+                id="themeToggle"
+                class="theme-toggle">
+                ☀️ Light
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+
+        <!-- WELCOME -->
+
+        <div class="welcome">
+
+            <h1>
+                Admin Dashboard 👋
+            </h1>
+
+            <p>
+                Welcome back, {{ admin_name }}.
+                Monitor and manage the BookZen system.
+            </p>
+
+        </div>
+
+
+        <!-- STAT CARDS -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <h2>
+                    {{ total_books }}
+                </h2>
+
+                <p>
+                    Total Books
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    🎭
+                </div>
+
+                <h2>
+                    {{ total_genres }}
+                </h2>
+
+                <p>
+                    Total Genres
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <h2>
+                    {{ total_users }}
+                </h2>
+
+                <p>
+                    Registered Users
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    ⭐
+                </div>
+
+                <h2>
+                    {{ average_rating }}
+                </h2>
+
+                <p>
+                    Average Rating
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CHARTS -->
+
+        <div class="charts">
+
+
+            <!-- GENRE CHART -->
+
+            <div class="section chart-box">
+
+                <h2>
+                    🎭 Genre Distribution
+                </h2>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="genreChart"
+                        data-values='{{ genre_counts | tojson }}'>
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODEL CHART -->
+
+            <div class="section chart-box">
+
+                <h2>
+                    🤖 Model Accuracy
+                </h2>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="modelChart">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MODEL METRICS -->
+
+        <div class="section">
+
+            <h2>
+                🎯 NLP Model Performance
+            </h2>
+
+            <p>
+                BookZen uses machine learning for
+                automatic book genre classification.
+            </p>
+
+
+            <div class="metrics">
+
+
+                <div class="metric">
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        Accuracy
+                    </span>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        Precision
+                    </span>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        Recall
+                    </span>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        F1 Score
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- GENRE DETAILS -->
+
+        <div class="section">
+
+            <h2>
+                📊 Books by Genre
+            </h2>
+
+
+            {% for genre, count in genre_counts.items() %}
+
+            <div class="genre-row">
+
+                <span>
+                    {{ genre }}
+                </span>
+
+                <strong>
+                    {{ count }}
+                </strong>
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+        <!-- MANAGEMENT -->
+
+        <div class="section">
+
+            <h2>
+                ⚙️ Quick Management
+            </h2>
+
+
+            <div class="actions">
+
+                <a
+                    class="btn"
+                    href="{{ url_for(
+                        'admin_books'
+                    ) }}">
+
+                    📚 Manage Books
+
+                </a>
+
+
+                <a
+                    class="btn"
+                    href="{{ url_for(
+                        'admin_book_add'
+                    ) }}">
+
+                    ➕ Add New Book
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="{{ url_for(
+        'static',
+        filename='js/theme.js'
+    ) }}"></script>
+
+
+    <script src="{{ url_for(
+        'static',
+        filename='js/admin_charts.js'
+    ) }}"></script>
+
+
+</body>
+
+</html>
